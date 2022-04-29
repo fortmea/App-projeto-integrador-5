@@ -47,7 +47,7 @@ class _homePageStateState extends State<homePageState> {
                 colors: <Color>[Colors.white, Colors.grey]),
           ),
         ),
-        title: Row(children: [
+        title: Row(children: const [
           Icon(
             LineAwesomeIcons.car,
             color: Colors.black,
@@ -109,7 +109,7 @@ class _homePageStateState extends State<homePageState> {
                                   Padding(
                                       padding: const EdgeInsets.all(16),
                                       child: Row(children: [
-                                        Icon(LineAwesomeIcons.user_tie),
+                                        const Icon(LineAwesomeIcons.user_tie),
                                         Text(
                                           caminhoneiros[caminhoneiros.keys
                                               .elementAt(index)]["nome"],

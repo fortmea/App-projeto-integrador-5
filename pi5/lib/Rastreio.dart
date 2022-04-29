@@ -83,10 +83,10 @@ class _rastreioPageState extends State<rastreioPage> {
   Widget build(BuildContext context) {
     timer = Timer.periodic(const Duration(seconds: 10), (timer) {
       if (_rastreando == true) {
-        print("hehe");
         updateCoordenadas();
       }
     });
+
     positionStream =
         Geolocator.getPositionStream(locationSettings: locationSettings)
             .listen((Position? position) async {
@@ -161,7 +161,8 @@ class _rastreioPageState extends State<rastreioPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(primary: Colors.black),
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.white, elevation: 10),
                         onPressed: () {
                           if (_rastreando == false) {
                             setState(() {
@@ -174,9 +175,16 @@ class _rastreioPageState extends State<rastreioPage> {
                           }
                         },
                         label: _rastreando
-                            ? const Text("Interromper viagem")
-                            : const Text("Iniciar viagem"),
-                        icon: const Icon(LineAwesomeIcons.truck),
+                            ? const Text(
+                                "Interromper viagem",
+                                style: TextStyle(color: Colors.black),
+                              )
+                            : const Text("Iniciar viagem",
+                                style: TextStyle(color: Colors.black)),
+                        icon: const Icon(
+                          LineAwesomeIcons.truck,
+                          color: Colors.black,
+                        ),
                       ),
                     ],
                   )),
