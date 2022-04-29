@@ -144,7 +144,9 @@ class _rastreioPageState extends State<rastreioPage> {
             child: Column(children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Text("Sua posição: " + posicao)],
+                children: [
+                  (posicao != "") ? Text("Sua posição: " + posicao) : Text("")
+                ],
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
