@@ -1,4 +1,4 @@
-# pi5
+# PI5
 
 Projeto Fluter para o 5º Projeto integrador do Curso de Bacharelado em Sistemas de Informação (Unifio 2022).
 
