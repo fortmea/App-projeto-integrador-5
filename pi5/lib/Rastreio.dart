@@ -164,6 +164,7 @@ class _rastreioPageState extends State<rastreioPage> {
                     children: [
                       ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
+                          
                             primary: Colors.white, elevation: 10),
                         onPressed: () {
                           if (_rastreando == false) {
