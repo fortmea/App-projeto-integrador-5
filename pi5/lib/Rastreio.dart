@@ -17,7 +17,7 @@ class _rastreioPageState extends State<rastreioPage> {
     accuracy: LocationAccuracy.high,
     distanceFilter: 100,
   );
-  late StreamSubscription<Position> positionStream;
+
   String posicao = "";
   Map<dynamic, dynamic> veiculo = {};
   String idVeiculo = "";
@@ -42,7 +42,6 @@ class _rastreioPageState extends State<rastreioPage> {
   @override
   void dispose() {
     timer?.cancel();
-    positionStream.cancel();
     super.dispose();
   }
 
@@ -81,52 +80,38 @@ class _rastreioPageState extends State<rastreioPage> {
 
   @override
   Widget build(BuildContext context) {
-    timer = Timer.periodic(const Duration(seconds: 10), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 10), (timer) async {
+      Position position = await Geolocator.getCurrentPosition();
+      if (mounted) {
+        setState(() {
+          posicao =
+              '${position.latitude.toString()}, ${position.longitude.toString()}';
+        });
+      }
       if (_rastreando == true) {
         updateCoordenadas();
       }
     });
 
-    positionStream =
-        Geolocator.getPositionStream(locationSettings: locationSettings)
-            .listen((Position? position) async {
-      setState(() {
-        posicao = (position == null
-            ? 'Unknown'
-            : '${position.latitude.toString()}, ${position.longitude.toString()}');
-      });
-    });
-
     return Scaffold(
         appBar: AppBar(
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: RadialGradient(
-                  center: Alignment.topLeft,
-                  focal: Alignment.bottomRight,
-                  radius: 20,
-                  colors: <Color>[Colors.white, Colors.grey]),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          centerTitle: true,
+          leading: const Icon(
+            LineAwesomeIcons.box,
+            color: Colors.black,
+          ),
+          title: Text(
+            "Frete de " + widget.caminhoneiro["nome"],
+            style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w400,
             ),
           ),
-          title: Row(children: [
-            const Icon(
-              LineAwesomeIcons.box,
-              color: Colors.black,
-            ),
-            Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: Text(
-                  "Frete de " + widget.caminhoneiro["nome"],
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 16),
-                ))
-          ]),
           actions: [
             IconButton(
                 onPressed: () {
-                  positionStream.cancel();
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -145,7 +130,16 @@ class _rastreioPageState extends State<rastreioPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  (posicao != "") ? Text("Sua posição: " + posicao) : Text("")
+                  (posicao != "")
+                      ? Text("Sua posição: " + posicao)
+                      : const Text("")
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(LineAwesomeIcons.user_tie),
+                  Text("CPF: " + widget.caminhoneiro["cpf"])
                 ],
               ),
               Row(
@@ -164,7 +158,6 @@ class _rastreioPageState extends State<rastreioPage> {
                     children: [
                       ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
-                          
                             primary: Colors.white, elevation: 10),
                         onPressed: () {
                           if (_rastreando == false) {
