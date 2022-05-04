@@ -123,6 +123,7 @@ class _homePageStateState extends State<homePageState> {
                             search(value);
                           },
                           decoration: const InputDecoration(
+                            floatingLabelStyle: TextStyle(color: Colors.black),
                             labelText: 'Pesquise por nome',
                             suffixIcon: Icon(
                               LineAwesomeIcons.search,
