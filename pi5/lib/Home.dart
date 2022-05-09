@@ -16,12 +16,11 @@ class _homePageStateState extends State<homePageState> {
   Map<dynamic, dynamic> caminhoneiros = {}; //Armazena dados mostrados
   Map<dynamic, dynamic> ocaminhoneiros =
       {}; //Armazena todos os dados, assim não é necessário fazer chamada no firebase sempre que fizer pequisa
-  int _count = 0;
+
   double _elevation = 0;
   @override
   void initState() {
     _elevation = 0;
-    _count = 0;
     caminhoneiros = {};
     dados();
     _textEditingController = TextEditingController();
@@ -64,7 +63,6 @@ class _homePageStateState extends State<homePageState> {
     ocaminhoneiros = partial;
     setState(() {
       caminhoneiros = partial;
-      _count = partial.length;
     });
   }
 
@@ -134,45 +132,59 @@ class _homePageStateState extends State<homePageState> {
                           ),
                         ),
                       ))),
-              Expanded(
-                  child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: caminhoneiros.length,
-                itemBuilder: (context, index) {
-                  if (_count > 0) {
-                    return Row(children: [
-                      Expanded(
-                          child: Card(
-                              elevation: 5,
-                              child: InkWell(
-                                  hoverColor: Colors.blueGrey,
-                                  onTap: () {
-                                    Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => rastreioPage(
-                                              caminhoneiro: caminhoneiros[
-                                                  caminhoneiros.keys
-                                                      .elementAt(index)]),
-                                        ));
-                                  },
-                                  child: Row(children: [
-                                    Padding(
-                                        padding: const EdgeInsets.all(16),
-                                        child: Row(children: [
-                                          const Icon(LineAwesomeIcons.user_tie),
-                                          Text(
-                                            caminhoneiros[caminhoneiros.keys
-                                                .elementAt(index)]["nome"],
-                                          )
-                                        ]))
-                                  ])))),
-                    ]);
-                  } else {
-                    return const Text("Lista vazia");
-                  }
-                },
-              ))
+              (ocaminhoneiros.isEmpty)
+                  ? const CircularProgressIndicator()
+                  : Expanded(
+                      child: (caminhoneiros.isEmpty)
+                          ? Text("Nenhuma correspondência.")
+                          : ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: caminhoneiros.length,
+                              itemBuilder: (context, index) {
+                                if (caminhoneiros.isNotEmpty) {
+                                  return Row(children: [
+                                    Expanded(
+                                        child: Card(
+                                            elevation: 5,
+                                            child: InkWell(
+                                                hoverColor: Colors.blueGrey,
+                                                onTap: () {
+                                                  Navigator.pushReplacement(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) => rastreioPage(
+                                                            caminhoneiro: caminhoneiros[
+                                                                caminhoneiros
+                                                                    .keys
+                                                                    .elementAt(
+                                                                        index)]),
+                                                      ));
+                                                },
+                                                child: Row(children: [
+                                                  Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              16),
+                                                      child: Row(children: [
+                                                        const Icon(
+                                                            LineAwesomeIcons
+                                                                .user_tie),
+                                                        Text(
+                                                          caminhoneiros[
+                                                                  caminhoneiros
+                                                                      .keys
+                                                                      .elementAt(
+                                                                          index)]
+                                                              ["nome"],
+                                                        )
+                                                      ]))
+                                                ])))),
+                                  ]);
+                                } else {
+                                  return const Text("Lista vazia");
+                                }
+                              },
+                            ))
             ],
           ),
         ),
