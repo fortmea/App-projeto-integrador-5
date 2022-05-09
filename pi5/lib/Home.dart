@@ -136,7 +136,7 @@ class _homePageStateState extends State<homePageState> {
                   ? const CircularProgressIndicator()
                   : Expanded(
                       child: (caminhoneiros.isEmpty)
-                          ? Text("Nenhuma correspondência.")
+                          ? const Text("Nenhuma correspondência.")
                           : ListView.builder(
                               shrinkWrap: true,
                               itemCount: caminhoneiros.length,
